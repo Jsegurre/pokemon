@@ -26,5 +26,6 @@ img{
     width: 80%;
     padding: 20px;
     fount-family: arial;
+    
 }    
 `;
