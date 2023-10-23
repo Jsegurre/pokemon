@@ -1,82 +1,81 @@
-import {LitElement,html,css} from 'lit-element';
-import {genarlStyles } from './css/genarl-styles.js';
-import {cardStyles } from './css/card-styles.js';
-import {pokemon} from './pokemon';
-
-
+import { LitElement, html, css } from "lit-element";
+import { genarlStyles } from "./css/genarl-styles.js";
+import { cardStyles } from "./css/card-styles.js";
+import { pokemon } from "./pokemon";
 
 export class PokeCards extends LitElement {
-    static get styles() {
-        return [genarlStyles, cardStyles];
-    }
+  static get styles() {
+    return [genarlStyles, cardStyles];
+  }
 
-    
-    static get properties() {
-        return {
-            title: { 
-                type: {String},
-                imgpokemon: {type: String},
-          
-              
-             }
-        };
-    }
-    constructor () {
-        super();
-        this.type = '001';
-        // this.pokemon = pokemon;
-    }
+  static get properties() {
+    return {
+      title: {
+        type: { String },
+        imgpokemon: { type: String },
+        params: { type: Object },
+      },
+    };
+  }
+  constructor() {
+    super();
+    this.type = "001";
+    // this.pokemon = pokemon;
+    this.params = {
+      name: ``,
+    };
+  }
 
-
-
-    render() {
-        return html`
-        <div class="card">
-            
-        <p>
-
-        Búsqueda de Pokemon: <input type="search" name="busquedapokemon" placeholder="tipo de pokemon...">
-    
-        <input type="submit" value="Buscar">
-    
-      </p>
-        <div class="container_pokemon">
-                ${pokemon.map(inf => html`
-                    <div class="card">
-                    <h3>${inf.name.toUpperCase()}</h3>
-                     <div class="pokemon_header">
-                          </div>                         
-                        <div class="pokemon_img">
-                            <img src=${inf.img}/>
-                            <div class="pokemon_abt">
-                            <p>${inf.about}</p>
-                            </div>
-                            <div class="pokemon_sz">
-                            <h2>${inf.size.height}</h2>
-                            <h2>${inf.size.weight}</h2>
-                            </div>
-                            <div class="pokemon_rr">
-                            <h2>${inf.rarity}</h2>
-                            
-                            
-
-
-
-                            </div>                           
-                        
-                       
-
-                       
+  render() {
+    return html`
+         <div>
+            <p>
+                    Pokemon favorito:
+                
+                    <select>
+                    ${pokemon.map(
+                      (name) => html`
+                        <option>${name.name.toUpperCase()}</option>
+                      `
+                    )}
+                    </select>
                    
+
+
+                    <input type="submit" value="Enviar" />  
+                  </p>
+                
+                  </div>
+            <div class="grid-column-8"> 
+          
+          ${pokemon.map(
+            (inf) => html`
+              <div class="card">
+
+
+                <h3>${inf.name.toUpperCase()}</h3>
+                <h2>${inf.num.toUpperCase()}</h2>
+                <div class="pokemon_header"></div>
+                <div class="pokemon_img">
+                <img src=${inf.img} />
+                 
+
                     
-                         
-                    </div>
-                `)}
-        
+          
+            
+
+                 
+                  
 
 
-
-        
-        `;
-    }}
-    customElements.define('pokemon-cards', PokeCards);
+                  </div>
+                </div>
+              </div>
+            `
+          )}
+        </div>
+      </div>
+    `;
+  }
+}
+customElements.define("pokemon-cards", PokeCards);
