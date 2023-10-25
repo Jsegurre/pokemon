@@ -2,79 +2,126 @@ import { LitElement, html, css } from "lit-element";
 import { genarlStyles } from "./css/genarl-styles.js";
 import { cardStyles } from "./css/card-styles.js";
 import { pokemon } from "./pokemon";
-
 export class PokeCards extends LitElement {
-  static get styles() {
-    return [genarlStyles, cardStyles];
-  }
-
-  static get properties() {
-    return {
-      title: {
-        type: { String },
-        imgpokemon: { type: String },
-        params: { type: Object },
-      },
-    };
-  }
+  static styles = [genarlStyles, cardStyles];
+  static properties = {
+    pokemonData: { type: Array },
+    
+    selectedPokemon: { type: String },
+  };
   constructor() {
     super();
-    this.type = "001";
-    // this.pokemon = pokemon;
-    this.params = {
-      name: ``,
-    };
+    this.pokemonData = pokemon;
+    this.selectedPokemon = "";
+  }
+  pokemonSelect(e) {
+    this.selectedPokemon = e.target.value;
   }
 
+  sortPokemonAZ() {
+    this.pokemonData = this.pokemonData.sort((a, b) => { //filtro para ordenar A-Z
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    });
+    this.requestUpdate();
+    console.log("RequestUpdate");
+  }
+  sortPokemonAtZ() {
+    this.pokemonData = this.pokemonData.sort((a, b) => { //filtro para ordenar Z-A
+      if (a.name > b.name) return -1;
+      if (a.name < b.name) return 1;
+      return 0;
+    });
+    this.requestUpdate();
+    console.log("RequestUpdate");
+  }
+
+  filterPokemonByName(e) { //Creacion del filtro Pokemon
+    const searchText = e.target.value.toLowerCase(); // Convertir el texto de búsqueda a minúsculas para que buque por igual 
+    this.pokemonData = pokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchText));
+    this.requestUpdate();
+    console.log(this.pokemonData);
+  }
+  
+  
+  
   render() {
     return html`
-         <div>
-            <p>
-                    Pokemon favorito:
-                
-                    <select>
-                    ${pokemon.map(
-                      (name) => html`
-                        <option>${name.name.toUpperCase()}</option>
-                      `
-                    )}
-                    </select>
-                   
+      <div class="grid-column-8">
+        <p class="txt">Escoge tu Pokémon Favorito:</p>
+        <select class="ine" @change="${this.pokemonSelect}">
+          <option value="">Selecciona uno</option>
+          ${this.pokemonData.map(
+            (pokemon) => html`
+              <option value="${pokemon.name}">${pokemon.name}</option>    
+              
+            `
 
 
-                    <input type="submit" value="Enviar" />  
-                  </p>
-                
-                  </div>
-            <div class="grid-column-8"> 
+
+          )}
+        </select>
+        <button class="inp" @click="${this.sortPokemonAZ}">Ordenar A-Z</button>
+        <button class="inp" @click="${this.sortPokemonAtZ}">Ordenar Z-A</button>
+        
+
+        <input class="inpe" type="text" name="buscador" id="buscador" placeholder="Busca Tu Pokemon Favorito..." @input=${this.filterPokemonByName}/>
+
+        
+        
+      </div>
+      <div class="details">
+  ${
+    this.selectedPokemon
+      ? html`
+          ${this.pokemonData
+            .filter((pokemon) => pokemon.name === this.selectedPokemon)
+            .map(
+              (pokemon) => html`
+        <div class="grid-column-7">
+        <div class="cards">
+          <h3>${pokemon.name}</h3>
           
-          ${pokemon.map(
-            (inf) => html`
-              <div class="card">
+          <div class="pokemon_header"></div>
+          <div class="pokemon_img">
+            <img src="${pokemon.img}" />        
+            </div>
+            <p class="txts"> TYPE: ${pokemon[
+              `quick-move`
+            ][0].type.toUpperCase()}</p>
+           
+          </div>
 
 
-                <h3>${inf.name.toUpperCase()}</h3>
-                <h2>${inf.num.toUpperCase()}</h2>
-                <div class="pokemon_header"></div>
-                <div class="pokemon_img">
-                <img src=${inf.img} />
-                 
 
+          <div class="cardt">
+          <p >${pokemon.about.toUpperCase()}</p>
+          </div
+          </div>
+      
+        `
+            )}
+        `
+      : html`
+          <div class="grid-column-8">
+            ${this.pokemonData.map(
+              (pokemon) => html`
+                <div class="card">
+                  <h3>${pokemon.name.toUpperCase()}</h3>
                     
-          
-            
-
-                 
-                  
-
-
+                  <div class="pokemon_header"></div>
+                  <div class="pokemon_img">
+                    <img src="${pokemon.img}" />
                   </div>
                 </div>
-              </div>
-            `
-          )}
-        </div>
-      </div>
+              `
+            )}
+          </div>
+        `
+  }
+</div>
+</div>
     `;
   }
 }

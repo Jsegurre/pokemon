@@ -25,8 +25,28 @@ export const genarlStyles = css`
     border:2px solid red;
     border-style: 
     border-radius:20px;
-    margin:20px;
+    margin:5px;
     padding:10px;
+    text-align:right;
+    background-image: url('https://i.blogs.es/2e39a5/anniversaryposter2019/840_560.jpeg');
+    background-attachment: fixed;
+    background-size:cover;
+  }
+  .grid-column-7 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: hidden;
+    justify-content:center;
+    border:2px solid red;
+    border-style: 
+    border-radius:20px;
+    margin:5px;
+    padding:10px;
+    text-align:right;
+    background-image: url('https://i.blogs.es/2e39a5/anniversaryposter2019/840_560.jpeg');
+    background-attachment: fixed;
+    background-size:cover;
   }
 
   .grid-column-6 {
